@@ -209,6 +209,8 @@ class Platform:
         if self.crumbling:
             alpha = int(255 * (self.crumble_timer / 40))
         if self.invisible:
+            if self.invisible:
+                alpha = 50
             return
         color = PLATFORM_C
         if self.crumble:
@@ -482,10 +484,8 @@ def build_level(n):
         goal  = Goal(1800, 60)
         platforms = [
             Platform(0,    220, 150),
-            Platform(200,  180, 60, invisible=True),
             Platform(320,  200, 80),
-            Platform(460,  160, 60, invisible=True),
-            Platform(580,  140, 80, moving=True, mx=1, move_range=120),
+            Platform(510,  160, 90, invisible=True),
             Platform(760,  180, 60, invisible=True),
             Platform(880,  140, 100),
             Platform(1040, 100, 60, invisible=True),
@@ -510,19 +510,17 @@ def build_level(n):
         platforms = [
             Platform(0,    160, 120),
             Platform(180,  120, 40, crumble=True),
-            Platform(280,  100, 40, moving=True, mx=1, move_range=80),
             Platform(420,  140, 40, invisible=True),
             Platform(520,  100, 60, crumble=True),
-            Platform(640,  80,  40, moving=True, mx=0, my=1, move_range=50),
             Platform(740,  120, 40, invisible=True),
             Platform(840,  80,  60),
             Platform(960,  60,  40, crumble=True),
-            Platform(1060, 100, 40, moving=True, mx=1, move_range=60),
+            Platform(1060, 100, 40, moving=True, mx=0, my=1, move_range=60),
             Platform(1200, 80,  60),
             Platform(1320, 60,  40, invisible=True),
             Platform(1440, 40,  60, crumble=True),
             Platform(1560, 60,  80),
-            Platform(1700, 40,  100, moving=True, mx=1, move_range=100),
+            Platform(1700, 40,  100, moving=True, mx=0, my=1, move_range=100),
             Platform(1880, 60,  140),
             Platform(2080, 40,  200),
         ]
@@ -651,7 +649,7 @@ def main():
             if died:
                 spawn_particles(player.rect.centerx, player.rect.centery, RED, 25, 6)
                 trigger_shake(10, 18)
-                rage.add(20)
+                rage.add(40)
                 death_count += 1
                 death_msg = random.choice(DEATH_MSGS)
                 state = STATE_DEAD
@@ -759,6 +757,8 @@ def main():
             if random.random() < 0.4:
                 spawn_particles(random.randint(0,WIDTH), 0, GOAL_C, 1, 2)
             update_draw_particles(screen)
+            if (pygame.key.get_pressed()[pygame.K_RETURN]):
+                return(STATE_MENU)
 
         pygame.display.flip()
 
